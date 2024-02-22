@@ -15,22 +15,22 @@ RGB_styles = [
     'breath', 'leap', 'flow', 'raise_up', 'colorful', 'colorful_leap'
 ]
 colorful_leds = [
-    "#ff0000",
-    "#e71164",
-    "#ffa500",
-    "#0000ff",
-    "#ffC800",
-    "#00ff00",
-    "#0000ff",
-    "#00ffb4",
-    "#ff0000",
-    "#00ff00",
-    "#00ff00",
-    "#8b00ff",
-    "#8b00ff",
-    "#8b00ff",
-    "#0000ff",
-    "#0000ff",
+    "#dbeb34",
+    "#c3eb34",
+    "#96eb34",
+    "#62eb34",
+    "#34eb59",
+    "#34eb99",
+    "#34e5eb",
+    "#34c0eb",
+    "#3493eb",
+    "#3468eb",
+    "#343aeb",
+    "#5934eb",
+    "#8334eb",
+    "#a834eb",
+    "#c934eb",
+    "#eb34eb",
 ]
 
 
@@ -59,15 +59,16 @@ class WS2812():
     def init(self):
         self.strip = PixelStrip(self.led_count, self.led_pin, self.led_freq_hz,
                                 self.led_dma, self.led_invert,
-                                self.led_brightness)
+                                255)
+        self.strip.setBrightness(10)
         time.sleep(0.01)
         self.strip.begin()
 
     def reinit(self):
         # if self.strip is not None:
-        # 	# del self.strip
-        # 	self.strip._cleanup()
-        # 	self.strip = None
+        #   # del self.strip
+        #   self.strip._cleanup()
+        #   self.strip = None
         # self.init()
 
         if self.strip is None:
@@ -132,7 +133,7 @@ class WS2812():
             # --- no breath ---
             # r, g, b =  color
             # for index in self.lights_order:
-            # 	self.strip.setPixelColor(index, Color(r,g,b))
+            #   self.strip.setPixelColor(index, Color(r,g,b))
             # self.strip.show()
             # time.sleep(2)
 
@@ -164,29 +165,36 @@ class WS2812():
 
     def raise_up(self, color: list = [255, 255, 255], speed=50):
         speed = 101 - speed
-        r, g, b = color
+        # r, g, b = color
+        _color = list(
+            self.hex_to_rgb(colorful_leds[i]) for i in range(self.led_count))
         while True:
             self.reinit()
             for i in range(2, 101):
-                r, g, b = [int(x * i * 0.01) for x in color]
+                # r, g, b = [int(x * i * 0.01) for x in color]
                 for index in range(0, 4, 1):
+                    r, g, b = [int(x * i * 0.01) for x in _color[index]]
                     self.strip.setPixelColor(self.lights_order[index],
                                              Color(r, g, b))
                 self.strip.show()
                 time.sleep(0.0002 * speed)
             for i in range(2, 101):
-                r, g, b = [int(x * i * 0.01) for x in color]
+                # r, g, b = [int(x * i * 0.01) for x in color]
                 for index in range(4, 8, 1):
+                    r, g, b = [int(x * i * 0.01) for x in _color[index]]
                     self.strip.setPixelColor(self.lights_order[index],
                                              Color(r, g, b))
                 self.strip.show()
                 time.sleep(0.0002 * speed)
             for i in range(2, 101):
-                r, g, b = [int(x * i * 0.01) for x in color]
+                # r, g, b = [int(x * i * 0.01) for x in color]
                 for index in range(8, 16, 1):
+                    r, g, b = [int(x * i * 0.01) for x in _color[index]]
                     self.strip.setPixelColor(self.lights_order[index],
                                              Color(r, g, b))
-                self.strip.show()
+                    self.strip.show()
+                    time.sleep(0.00005 * speed)
+                # self.strip.show()
                 time.sleep(0.0002 * speed)
             # turn off
             time.sleep(10 * 0.0005 * speed)
@@ -225,7 +233,7 @@ class WS2812():
                     self.strip.setPixelColor(index, Color(0, 0, 0))
                 self.strip.setPixelColor(i, Color(r, g, b))
                 self.strip.show()
-                time.sleep(0.001 * speed)
+                time.sleep(0.01 * speed)
 
 if __name__ == "__main__":
     speed = 80

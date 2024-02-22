@@ -70,6 +70,7 @@ screen_always_on = False
 screen_off_time = 60
 rgb_enable = True
 rgb_style = 'breath'  # 'breath', 'leap', 'flow', 'raise_up', 'colorful', 'colorful_leap'
+rgb_brightness = 255
 rgb_color = '0a1aff'
 rgb_blink_speed = 50
 rgb_pwm_freq = 1000 # kHz
@@ -106,6 +107,7 @@ try:
         rgb_enable = True
     rgb_style = str(config['all']['rgb_style'])
     rgb_color = str(config['all']['rgb_color'])
+    rgb_brightness = str(config['all']['rgb_brightness'])
     rgb_blink_speed = int(config['all']['rgb_blink_speed'])
     rgb_pwm_freq = int(config['all']['rgb_pwm_freq'])
     rgb_pin = int(config['all']['rgb_pin'])
@@ -119,6 +121,7 @@ except Exception as e:
                     'rgb_enable':rgb_enable,
                     'rgb_style':rgb_style,
                     'rgb_color':rgb_color,
+                    'rgb_brightness':rgb_brightness,
                     'rgb_blink_speed':rgb_blink_speed,
                     'rgb_pwm_freq':rgb_pwm_freq,
                     'rgb_pin':rgb_pin,
@@ -136,6 +139,7 @@ log("screen_off_time : %s"%screen_off_time)
 log("rgb_enable : %s"%rgb_enable)
 log("rgb_style : %s"%rgb_style)
 log("rgb_color : %s"%rgb_color)
+log("rgb_brightness : %s"%rgb_brightness)
 log("rgb_blink_speed : %s"%rgb_blink_speed)
 log("rgb_pwm_freq : %s"%rgb_pwm_freq)
 log("rgb_pin : %s"%rgb_pin)
@@ -144,7 +148,7 @@ log(">>>", timestamp=False)
 # rgb_strip init
 # =================================================================
 try:
-    strip = WS2812(LED_COUNT=16, LED_PIN=rgb_pin, LED_FREQ_HZ=rgb_pwm_freq*1000)
+    strip = WS2812(LED_COUNT=16, LED_PIN=rgb_pin, LED_BRIGHTNESS=255, LED_FREQ_HZ=rgb_pwm_freq*1000)
     log('rgb_strip init success')
 except Exception as e:
     log('rgb_strip init failed:\n%s'%e)
@@ -266,7 +270,7 @@ signal.signal(signal.SIGINT, signal_handler)
 # main
 # =================================================================
 def main():
-    global fan_temp, power_key_pin, screen_off_time, rgb_color, rgb_pin
+    global fan_temp, power_key_pin, screen_off_time, rgb_brightness, rgb_color, rgb_pin
     global oled_stat
 
     ip = 'DISCONNECT'

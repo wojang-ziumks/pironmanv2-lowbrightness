@@ -32,6 +32,7 @@ screen_off_time = 60
 rgb_enable = True
 rgb_style = breath
 rgb_color = 0a1aff
+rgb_brightness = 10
 rgb_blink_speed = 50
 rgb_pwm_freq = 1000
 rgb_pin = 10
